@@ -25,7 +25,7 @@ gint sum(gpointer label){//求和函数
     n+=i++;
     sprintf(buf,"Till %d, Sum = %d",i-1,n);
     gtk_label_set_text(GTK_LABEL(label),buf);
-    if(i>100)return FALSE;//大于100时停止累加
+    if(i>1000)return FALSE;//大于100时停止累加
     return TRUE;
 }
 gint numCicle(gpointer label){//0-9数字循环
