@@ -92,6 +92,7 @@ void initProcWind(int argc,char **argv,const char *title)
 
 int main(int argc , char **argv) //主函数
 {
+    //3个子进程
     pid_t pid_1,pid_2,pid_3;
     while((pid_1=fork())==-1);
     if(pid_1==0) initProcWind(argc,argv,"Time");

@@ -3,7 +3,7 @@
 #include<asm/unistd.h>
 
 int main(int argc,char **argv){
-    int i=syscall(385,argv[1],argv[2]);
+    int i=syscall(385,argv[1],argv[2]);//调用号为385
     printf("Done:i=%d\n",i);
     return 0;
 }

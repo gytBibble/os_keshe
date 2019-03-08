@@ -33,10 +33,10 @@ int main(int argc,char **argv)
     }
     //copy
     while(rd_len=read(source,buf,BUF_SIZE)){
-        if(rd_len==-1&&errno!=EINTR)break;//发生错误，文件读写位置无法预期，且不是因为慢系统调用
+        if(rd_len==-1&&errno!=EINTR)break;//发生错误，文件读写位置无法预期...且不是因为慢系统调用
         else if(rd_len>0){
             ptr=buf;
-            while(wr_len=write(target,ptr,BUF_SIZE)){
+            while(wr_len=write(target,ptr,rd_len)){
                 if(wr_len==-1&&errno!=EINTR)break;
                 else if(wr_len==rd_len)break;
                 else if(wr_len>0){//只写了一部分
