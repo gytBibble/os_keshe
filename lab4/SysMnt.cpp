@@ -1,3 +1,7 @@
+#include<iostream>
+#include<vector>
+#include<string>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,25 +14,27 @@
 #include <sys/time.h>
 #include <dirent.h>
 
+using namespace std;
+
 /*destroy a window 一个回调函数*/
 gint destroy(GtkWidget *widget, GdkEvent *event, gpointer data)
 {
-	gtk_main_quit();
+    gtk_main_quit();
     return false;
 }
 
 /*get cpu info*/
-char *GetCpuInfo(char *_buf){
-    FILE *fp;
-    fp=fopen=("/proc/cpuinfo","r");
-    char *buf=_buf;
-    int i;
-    //vendor_id:2
-    for(i=0;i<2;i++) fgets(buf,256,fp);
-    
-    //cpu name:5
-    //cpu MHz:8
-    //cache size :9
+bool GetCpuInfo(vector<string>& str){
+    ifstream text;
+    text.open("/proc/cpuinfo",ios::in);
+    str.clear();
+    //vector<string> str;
+    while(!text.eof()){
+        string inbuf;
+        getline(text,inbuf,'\n');
+        str.push_back(text);
+    }
+    return true;
 }
 
 int main(int argc,char **argv){
@@ -41,7 +47,7 @@ int main(int argc,char **argv){
     GtkWidget *button2; //
     GtkWidget *button3; //
 
-    GtkWidget *frame;
+    
 
     GtkWidget *vbox;
     GtkWidget *hbox;
@@ -66,17 +72,41 @@ int main(int argc,char **argv){
     gtk_table_attach_defaults(GTK_TABLE(table),notebook,0,6,0,1);//将笔记本控件加到表中第一行
     gtk_widget_show(notebook);//显示内容
 
-    char buf[];
-    char buf1[1024];
-    char buf2[1024];
-    char buf3[1024];
+
+    GtkWidget *frame1;
 
     /*系统信息:处理器信息、操作系统信息、About...*/
-    frame=gtk_frame_new("处理器信息");//一个新的框架
-    gtk_container_set_border_width(GTK_CONTAINER(frame),8);
-    gtk_widget_set_size_request(frame,500,150);
+    frame1=gtk_frame_new("处理器信息");//一个新的框架
+    gtk_container_set_border_width(GTK_CONTAINER(frame1),8);
+    gtk_widget_set_size_request(frame1,500,150);
 
-    sprintf(buf1,"\tCPU名称: %s\n\tCPU类型: %s\n\tCPU频率: %s\n\tCache大小: %s\n",GetCpuName(buf),)
+    //vendor_id:2  
+    //cpu name:5
+    //cpu MHz:8
+    //cache size :9
+    vector<string> cpu_info;
+    GetCpuInfo(cpu_info);
+    string myCpuInfo=cpu_info[1]+cpu_info[4]+cpu_info[7]+cpu_info[8];
+    label = gtk_label_new (myCpuInfo.c_str());
+    gtk_container_add (GTK_CONTAINER (frame1), label);
+    gtk_widget_show (label);
+    gtk_box_pack_start(GTK_BOX(vbox),frame1,FALSE,FALSE,5);
+    gtk_widget_show (frame1);
+    
 
+    gtk_widget_show (vbox);
+    label = gtk_label_new ("系统信息");
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox, label);
+
+    /*进程信息*/
+
+    /*模块信息*/
+
+    /*内存资源信息*/
+
+    
+    gtk_widget_show (table);
+    gtk_widget_show (window);
+    gtk_main ();
     return 0;
 }
